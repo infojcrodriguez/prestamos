@@ -1,0 +1,2433 @@
+<html><head><base href="Te ayudaré a crear una aplicación de préstamos completa con todos los formularios y funcionalidades que necesitas.">
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Sistema de Préstamos</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            :root {
+                --primary-color: #023047;       
+                --secondary-color: #219EBC;     
+                --success-color: #8ECAE6;       
+                --warning-color: #FFB703;       
+                --danger-color: #FB8500;        
+            }
+    
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Arial', sans-serif;
+            }
+    
+            body {
+                background-image: url("2106.jpg");
+                background-size: cover;
+                
+            }
+    
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+    
+            .login-container {
+                max-width: 400px;
+                margin: 100px auto;
+                padding: 40px;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 8px 24px rgba(2, 48, 71, 0.15);
+            }
+    
+            .login-container h2 {
+                color: #023047;
+                font-size: 28px;
+                margin-bottom: 30px;
+                text-align: center;
+                font-weight: 600;
+            }
+    
+            .login-credentials-hint {
+                text-align: center;
+                margin-bottom: 25px;
+                padding: 15px;
+                background: #f7f9fc;
+                border-radius: 8px;
+                color: #7f8c8d;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+    
+            .main-content {
+                display: none;
+            }
+    
+            .change-password-form {
+                display: none;
+            }
+    
+            .nav-tabs {
+                display: flex;
+                background-color: #023047;
+                padding: 10px;
+                border-radius: 5px 5px 0 0;
+                justify-content: space-between; 
+                align-items: center;
+            }
+    
+            .nav-tab {
+                color: white;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-right: 5px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+    
+            .nav-tab i {
+                font-size: 1.1em;
+            }
+    
+            .nav-tab:hover {
+                background-color: #219EBC;
+            }
+    
+            .nav-tab.active {
+                background-color: #219EBC;
+            }
+    
+            .form-container {
+                background-color: white;
+                padding: 20px;
+                border-radius: 0 0 5px 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+    
+            .form-group {
+                margin-bottom: 25px;
+            }
+    
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: #34495e;
+                font-size: 14px;
+                font-weight: 500;
+            }
+    
+            input, select {
+                width: 100%;
+                padding: 12px 15px;
+                border: 1px solid #dde1e7;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: border-color 0.3s ease;
+            }
+    
+            input:focus {
+                border-color: #219EBC;
+                outline: none;
+            }
+    
+            button {
+                width: 100%;
+                padding: 12px;
+                background: #219EBC;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+    
+            button:hover {
+                background: #023047;
+            }
+    
+            .btn-secondary {
+                background-color: #219EBC;
+                margin-left: 10px;
+            }
+    
+            .btn-secondary:hover {
+                background-color: #023047;
+            }
+    
+            .btn-danger {
+                background-color: #FB8500;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 0.9em;
+            }
+    
+            .btn-danger:hover {
+                background-color: #c0392b;
+            }
+    
+            .btn-ver i {
+                margin-right: 5px;
+            }
+    
+            .button-group {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+    
+            .table-container {
+                margin-top: 20px;
+                overflow-x: auto;
+            }
+    
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+    
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+    
+            th {
+                background-color: #023047;
+                color: white;
+            }
+    
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+    
+            .btn-pagar {
+                background-color: #8ECAE6;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 0.9em;
+            }
+    
+            .btn-pagar:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+    
+            .btn-ver {
+                background-color: #219EBC;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 0.9em;
+            }
+    
+            .btn-ver:hover {
+                background-color: #023047;
+            }
+    
+            .permisos-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+    
+            .permisos-container label {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+    
+            .permisos-container input[type="checkbox"] {
+                width: auto;
+                margin: 0;
+            }
+    
+            /* Add in the style section */
+            .header-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+    
+            .header-container img {
+                height: 50px;
+                width: auto;
+            }
+    
+            .config-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 20px 0;
+            }
+    
+            .config-item {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                text-align: center;
+                cursor: pointer;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+    
+            .config-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+    
+            .config-item i {
+                font-size: 2em;
+                color: var(--primary-color);
+                margin-bottom: 10px;
+                display: block;
+            }
+    
+            .config-item span {
+                color: var(--secondary-color);
+                font-weight: 500;
+            }
+    
+            .user-info {
+                display: flex;
+                align-items: center;
+                color: white;
+                padding: 10px 20px;
+                gap: 8px;
+                margin-left: auto; 
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 5px;
+            }
+    
+            .user-info i {
+                font-size: 1.2em;
+                color: var(--warning-color);
+            }
+    
+            .user-info span {
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+    
+            @media (max-width: 768px) {
+                .container {
+                    padding: 10px;
+                }
+    
+                .login-container {
+                    margin: 20px auto;
+                    padding: 20px;
+                    width: 90%;
+                }
+    
+                /* Navigation tabs adjustments */
+                .nav-tabs {
+                    flex-wrap: wrap;
+                }
+    
+                .nav-tab {
+                    width: 100%;
+                    text-align: center;
+                    margin: 2px 0;
+                }
+    
+                /* Form adjustments */
+                .form-group {
+                    margin-bottom: 15px;
+                }
+    
+                input, select {
+                    padding: 8px 10px;
+                    font-size: 16px;
+                }
+    
+                button {
+                    padding: 10px;
+                    font-size: 16px;
+                }
+    
+                /* Table adjustments */
+                .table-container {
+                    margin-top: 15px;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+    
+                table {
+                    font-size: 14px;
+                }
+    
+                th, td {
+                    padding: 8px;
+                    min-width: 100px;
+                }
+    
+                /* Permissions container adjustment */
+                .permisos-container {
+                    grid-template-columns: 1fr;
+                }
+    
+                /* Button groups adjustment */
+                .button-group {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+    
+                .button-group button {
+                    width: 100%;
+                    margin: 5px 0;
+                }
+    
+                .btn-secondary {
+                    margin-left: 0;
+                }
+    
+                /* Make report cards stack on mobile */
+                .reports-grid {
+                    grid-template-columns: 1fr;
+                }
+    
+                .user-info {
+                    width: 100%;
+                    justify-content: center;
+                    margin-top: 10px;
+                    order: -1; 
+                }
+            }
+    
+            /* Additional adjustments for very small screens */
+            @media (max-width: 480px) {
+                .report-card {
+                    padding: 12px;
+                }
+    
+                .report-card i {
+                    font-size: 1.5em;
+                }
+    
+                .report-card p {
+                    font-size: 1.2em;
+                }
+            }
+    
+            /* Reports styles */
+            .reports-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+    
+            .report-card {
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                padding: 25px;
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255,255,255,0.3);
+                position: relative;
+                overflow: hidden;
+            }
+    
+            .report-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+    
+            .report-card:nth-child(1) {
+                background: linear-gradient(135deg, #023047 0%, #219EBC 100%);
+            }
+    
+            .report-card:nth-child(2) {
+                background: linear-gradient(135deg, #219EBC 0%, #8ECAE6 100%);
+            }
+    
+            .report-card:nth-child(3) {
+                background: linear-gradient(135deg, #8ECAE6 0%, #FFB703 100%);
+            }
+    
+            .report-card:nth-child(4) {
+                background: linear-gradient(135deg, #FFB703 0%, #FB8500 100%);
+            }
+    
+            .report-card i {
+                font-size: 2.5em;
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 15px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            }
+    
+            .report-card h3 {
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 15px;
+                font-size: 1.2em;
+                font-weight: 500;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            }
+    
+            .report-card p {
+                font-size: 2em;
+                color: white;
+                font-weight: bold;
+                margin: 0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+    
+            .report-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+                transform: rotate(30deg);
+                pointer-events: none;
+            }
+    
+            .report-section {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+    
+            .report-section h3 {
+                color: var(--primary-color);
+                margin-bottom: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loginForm" class="login-container">
+            <h2>Iniciar Sesión</h2>
+            <div class="login-credentials-hint">
+                Use las credenciales por defecto:<br>
+                Usuario: demo<br>
+                Contraseña: Demo
+            </div>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="username" required placeholder="Ingrese su usuario">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="password" required placeholder="Ingrese su contraseña">
+                </div>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
+    
+        <div id="changePasswordForm" class="login-container change-password-form">
+            <h2>Cambiar Contraseña</h2>
+            <form onsubmit="changePassword(event)">
+                <div class="form-group">
+                    <label>Contraseña Actual:</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Nueva Contraseña:</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Nueva Contraseña:</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Cambiar Contraseña</button>
+                    <button type="button" class="btn-secondary" onclick="showMainContent()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    
+        <div id="mainContent" class="main-content">
+            <div class="container">
+                <div class="header-container" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                    <img src="logo.png" alt="Logo del sistema de préstamos" style="height: 80px; width: auto;">
+                    <h1 style="color: var(--primary-color);">Sistema de Préstamos</h1>
+                </div>
+    
+                <div class="nav-tabs">
+                    <div class="nav-tab" onclick="showTab('dashboard')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-tab" onclick="showTab('clientes')">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                    </div>
+                    <div class="nav-tab" onclick="showTab('prestamos')">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Préstamos</span>
+                    </div>
+                    <div class="nav-tab" onclick="showTab('pagos')">
+                        <i class="fas fa-cash-register"></i>
+                        <span>Pagos</span>
+                    </div>
+                    <div class="nav-tab" onclick="showTab('configuracion')">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </div>
+                    <div class="nav-tab" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </div>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="loggedInUser"></span>
+                    </div>
+                </div>
+    
+                <!-- Formulario de Clientes -->
+                <div id="clientes" class="form-container">
+                    <h2>Registro de Clientes</h2>
+                    <form id="clienteForm" onsubmit="registrarCliente(event)">
+                        <div class="form-group">
+                            <label>Nombre Completo:</label>
+                            <input type="text" id="nombreCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Cedula/Identificación:</label>
+                            <input type="text" id="dniCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono:</label>
+                            <input type="tel" id="telefonoCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección:</label>
+                            <input type="text" id="direccionCliente" required>
+                        </div>
+                        <button type="submit">Registrar Cliente</button>
+                    </form>
+                    <div class="table-container">
+                        <h3>Clientes Registrados</h3>
+                        <table id="tablaClientes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cedula</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="button-group" style="margin-top: 20px;">
+                        <button onclick="exportarClientesPDF()" class="btn-ver">
+                            <i class="fas fa-file-pdf"></i> Exportar a PDF
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Formulario de Préstamos -->
+                <div id="prestamos" class="form-container" style="display: none;">
+                    <h2>Nuevo Préstamo</h2>
+                    <form id="prestamoForm" onsubmit="registrarPrestamo(event)">
+                        <div class="form-group">
+                            <label>Cliente:</label>
+                            <select id="clientePrestamo" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Prestamista:</label>
+                            <select id="prestamistaPrestamo" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Monto:</label>
+                            <input type="number" id="montoPrestamo" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tasa de Interés (%):</label>
+                            <input type="number" id="interesPrestamo" min="1" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Frecuencia de Pago:</label>
+                            <select id="frecuenciaPago" required>
+                                <option value="diario">Diario</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="quincenal">Quincenal</option>
+                                <option value="mensual">Mensual</option>
+                                <option value="anual">Anual</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Plazo (en periodos según frecuencia):</label>
+                            <input type="number" id="plazoPrestamo" min="1" required>
+                        </div>
+                        <button type="submit">Calcular y Registrar Préstamo</button>
+                    </form>
+                    <div class="table-container">
+                        <h3>Préstamos Activos</h3>
+                        <table id="tablaPrestamos">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Prestamista</th>
+                                    <th>Monto</th>
+                                    <th>Interés</th>
+                                    <th>Frecuencia</th>
+                                    <th>Cuota</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <h3>Tabla de Amortización</h3>
+                        <table id="tablaAmortizacion">
+                            <thead>
+                                <tr>
+                                    <th>Nº Cuota</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Cuota</th>
+                                    <th>Capital</th>
+                                    <th>Interés</th>
+                                    <th>Saldo</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="button-group" style="margin-top: 20px;">
+                        <button onclick="exportarPrestamosPDF()" class="btn-ver">
+                            <i class="fas fa-file-pdf"></i> Exportar Préstamos a PDF
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Formulario de Pagos -->
+                <div id="pagos" class="form-container" style="display: none;">
+                    <h2>Registro de Pagos</h2>
+                    <form id="pagoForm" onsubmit="registrarPago(event)">
+                        <div class="form-group">
+                            <label>Préstamo:</label>
+                            <select id="prestamoPago" required onchange="actualizarPagosPendientes()"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Pago:</label>
+                            <input type="date" id="fechaPago" required onchange="actualizarPagosPendientes()">
+                        </div>
+                        <div class="form-group">
+                            <label>Cuota a Pagar:</label>
+                            <select id="selectCuota" required onchange="actualizarMontoPago()">
+                                <option value="">Seleccione cuota a pagar</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Monto a Pagar:</label>
+                            <input type="number" id="montoPago" required step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Pago:</label>
+                            <select id="tipoPago" required>
+                                <option value="regular">Pago Regular</option>
+                                <option value="mora">Pago de Mora</option>
+                            </select>
+                        </div>
+                        <button type="submit">Registrar Pago</button>
+                    </form>
+                    <div class="table-container">
+                        <h3>Historial de Pagos</h3>
+                        <table id="tablaPagos">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Préstamo</th>
+                                    <th>Monto Pagado</th>
+                                    <th>Tipo de Pago</th>
+                                    <th>Fecha</th>
+                                    <th>Cuota</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="button-group" style="margin-top: 20px;">
+                        <button onclick="exportarPagosPDF()" class="btn-ver">
+                            <i class="fas fa-file-pdf"></i> Exportar Historial a PDF
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Formulario de Usuarios -->
+                <div id="usuarios" class="form-container" style="display: none;">
+                    <h2>Gestión de Usuarios</h2>
+                    <form id="usuarioForm" onsubmit="registrarUsuario(event)">
+                        <div class="form-group">
+                            <label>Nombre de Usuario:</label>
+                            <input type="text" id="newUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña:</label>
+                            <input type="password" id="newUserPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Contraseña:</label>
+                            <input type="password" id="confirmUserPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Usuario:</label>
+                            <select id="tipoUsuario" required>
+                                <option value="admin">Administrador</option>
+                                <option value="consulta">Consulta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Permisos:</label>
+                            <div class="permisos-container">
+                                <label><input type="checkbox" id="permiso-clientes"> Clientes</label>
+                                <label><input type="checkbox" id="permiso-prestamos"> Préstamos</label>
+                                <label><input type="checkbox" id="permiso-pagos"> Pagos</label>
+                                <label><input type="checkbox" id="permiso-usuarios"> Usuarios</label>
+                                <label><input type="checkbox" id="permiso-reportes"> Reportes</label>
+                                <label><input type="checkbox" id="permiso-prestamista"> Prestamista</label>
+                            </div>
+                        </div>
+                        <button type="submit">Registrar Usuario</button>
+                    </form>
+                    <div class="table-container">
+                        <h3>Usuarios Registrados</h3>
+                        <table id="tablaUsuarios">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Tipo</th>
+                                    <th>Permisos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+    
+                <!-- Configuración -->
+                <div id="configuracion" class="form-container" style="display: none;">
+                    <h2>Configuración</h2>
+                    <div class="config-menu">
+                        <div class="config-item" onclick="showTab('usuarios')">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Usuarios</span>
+                        </div>
+                        <div class="config-item" onclick="showTab('prestamista')">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Prestamista</span>
+                        </div>
+                        <div class="config-item" onclick="showChangePassword()">
+                            <i class="fas fa-key"></i>
+                            <span>Cambiar Contraseña</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Prestamista Form -->
+                <div id="prestamista" class="form-container" style="display: none;">
+                    <h2>Información del Prestamista</h2>
+                    <form id="prestamistaForm" onsubmit="actualizarPrestamista(event)">
+                        <div class="form-group">
+                            <label>Nombre de la Empresa/Prestamista:</label>
+                            <input type="text" id="nombrePrestamista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>RNC/Identificación Fiscal:</label>
+                            <input type="text" id="rncPrestamista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección:</label>
+                            <input type="text" id="direccionPrestamista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono:</label>
+                            <input type="tel" id="telefonoPrestamista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico:</label>
+                            <input type="email" id="emailPrestamista" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sitio Web:</label>
+                            <input type="url" id="webPrestamista" placeholder="https://">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado:</label>
+                            <select id="estadoPrestamista" required>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                        <button type="submit">Guardar Información</button>
+                    </form>
+                    <div class="table-container">
+                        <h3>Prestamistas Registrados</h3>
+                        <table id="tablaPrestamistas">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>RNC/Identificación</th>
+                                    <th>Dirección</th>
+                                    <th>Teléfono</th>
+                                    <th>Email</th>
+                                    <th>Web</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+    
+                <!-- Dashboard (formerly Reportes) -->
+                <div id="dashboard" class="form-container">
+                    <h2>Dashboard del Sistema</h2>
+                    
+                    <div class="reports-grid">
+                        <!-- General Stats Cards -->
+                        <div class="report-card">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Total Prestado</h3>
+                            <p id="totalPrestado">$0.00</p>
+                        </div>
+                        
+                        <div class="report-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Total Clientes</h3>
+                            <p id="totalClientes">0</p>
+                        </div>
+                        
+                        <div class="report-card">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <h3>Préstamos Activos</h3>
+                            <p id="prestamosActivos">0</p>
+                        </div>
+                        
+                        <div class="report-card">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <h3>Pagos del Día</h3>
+                            <p id="pagosHoy">$0.00</p>
+                        </div>
+                    </div>
+    
+                    <!-- Daily Loans -->
+                    <div class="report-section">
+                        <h3>Préstamos del Día</h3>
+                        <table id="prestamosDiaTable">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Monto</th>
+                                    <th>Interés</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+    
+                    <!-- Overdue Loans -->
+                    <div class="report-section">
+                        <h3>Préstamos Vencidos</h3>
+                        <table id="prestamosVencidosTable">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Monto</th>
+                                    <th>Días Vencido</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+    
+                    <!-- Late Payments -->
+                    <div class="report-section">
+                        <h3>Pagos Atrasados</h3>
+                        <table id="pagosAtrasadosTable">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Préstamo</th>
+                                    <th>Cuota</th>
+                                    <th>Días Atraso</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="button-group" style="margin-top: 20px;">
+                        <button onclick="exportarDashboardPDF()" class="btn-ver">
+                            <i class="fas fa-file-pdf"></i> Exportar Dashboard a PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            let usuarios = [];
+            let clientes = [];
+            let prestamistas = [];
+            let prestamos = [];
+            let pagos = [];
+    
+            let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    
+            window.onload = async function() {
+                try {
+                    if (currentUser) {
+                        showMainContent();
+                        const dataLoaded = await cargarDatos();
+                        if (dataLoaded) {
+                            showTab('dashboard');
+                            applyUserPermissions(currentUser.permisos);
+                        }
+                    } else {
+                        document.getElementById('loginForm').style.display = 'block';
+                        document.getElementById('mainContent').style.display = 'none';
+                        document.getElementById('changePasswordForm').style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error en la inicialización:', error);
+                }
+            };
+    
+            async function cargarDatos() {
+                try {
+                    // Load data sequentially to ensure dependencies are met
+                    
+                    // 1. First load usuarios
+                    const respUsuarios = await fetch('usuarios.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'action=obtener'
+                    });
+                    const dataUsuarios = await respUsuarios.json();
+                    if (dataUsuarios.success) {
+                        usuarios = dataUsuarios.usuarios;
+                        actualizarTablaUsuarios();
+                    }
+    
+                    // 2. Then load prestamistas
+                    const respPrestamistas = await fetch('prestamistas.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'action=obtener'
+                    });
+                    const dataPrestamistas = await respPrestamistas.json();
+                    if (dataPrestamistas.success) {
+                        prestamistas = dataPrestamistas.prestamistas;
+                        actualizarTablaPrestamistas();
+                        actualizarSelectPrestamista();
+                    }
+    
+                    // 3. Then load clientes
+                    const respClientes = await fetch('clientes.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'action=obtener'
+                    });
+                    const dataClientes = await respClientes.json();
+                    if (dataClientes.success) {
+                        clientes = dataClientes.clientes;
+                        actualizarTablaClientes();
+                        actualizarSelectClientes();
+                    }
+    
+                    // 4. Then load prestamos
+                    const respPrestamos = await fetch('prestamos.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'action=obtener'
+                    });
+                    const dataPrestamos = await respPrestamos.json();
+                    if (dataPrestamos.success) {
+                        prestamos = dataPrestamos.prestamos;
+                        actualizarTablaPrestamos();
+                        actualizarSelectPrestamos();
+                    }
+    
+                    // 5. Finally load pagos
+                    const respPagos = await fetch('pagos.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'action=obtener'
+                    });
+                    const dataPagos = await respPagos.json();
+                    if (dataPagos.success) {
+                        pagos = dataPagos.pagos;
+                        actualizarTablaPagos();
+                    }
+    
+                    // Update all dependent data
+                    actualizarPagosPendientes();
+                    actualizarReportes();
+    
+                    // Remove console.log and only show error if something went wrong
+                    return true;
+    
+                } catch (error) {
+                    console.error('Error cargando datos:', error);
+                    // Only show alert if there was a real error loading data
+                    if (!prestamos.length && !clientes.length && !pagos.length) {
+                        alert('Error cargando datos del sistema');
+                    }
+                    return false;
+                }
+            }
+    
+            async function login(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+    
+                try {
+                    const response = await fetch('login.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `username=${username}&password=${password}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        currentUser = data.user;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        showMainContent();
+                        applyUserPermissions(currentUser.permisos);
+                        document.getElementById('loggedInUser').textContent = `${currentUser.username} (${currentUser.tipo})`;
+                        await cargarDatos();
+                        showTab('dashboard'); // Ensure dashboard is shown after login
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error en login:', error);
+                    alert('Error al intentar iniciar sesión');
+                }
+            }
+    
+            function showMainContent() {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('changePasswordForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                
+                // Hide all form containers first
+                document.querySelectorAll('.form-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                // Show dashboard
+                document.getElementById('dashboard').style.display = 'block';
+                
+                if (currentUser) {
+                    document.getElementById('loggedInUser').textContent = `${currentUser.username} (${currentUser.tipo})`;
+                }
+            }
+    
+            function showTab(tabName) {
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Hide all form containers
+                document.querySelectorAll('.form-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                // Show selected tab content
+                document.getElementById(tabName).style.display = 'block';
+                
+                // Add active class to selected tab
+                const selectedTab = document.querySelector(`.nav-tab[onclick="showTab('${tabName}')"]`);
+                if (selectedTab) {
+                    selectedTab.classList.add('active');
+                }
+                
+                // If showing dashboard, update reports
+                if (tabName === 'dashboard') {
+                    actualizarReportes();
+                }
+            }
+    
+            async function registrarCliente(event) {
+                event.preventDefault();
+                const formData = new FormData();
+                
+                formData.append('action', 'registrar');
+                formData.append('nombreCliente', document.getElementById('nombreCliente').value);
+                formData.append('dniCliente', document.getElementById('dniCliente').value);
+                formData.append('telefonoCliente', document.getElementById('telefonoCliente').value);
+                formData.append('direccionCliente', document.getElementById('direccionCliente').value);
+    
+                try {
+                    const response = await fetch('clientes.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('Cliente registrado correctamente');
+                        await cargarDatos(); 
+                        event.target.reset();
+                    } else {
+                        alert(data.message || 'Error al registrar el cliente');
+                    }
+                } catch (error) {
+                    console.error('Error registrando cliente:', error);
+                    alert('Error al registrar el cliente: ' + error.message);
+                }
+            }
+    
+            function actualizarTablaClientes() {
+                const tbody = document.querySelector('#tablaClientes tbody');
+                tbody.innerHTML = '';
+                clientes.forEach(cliente => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${cliente.nombre}</td>
+                            <td>${cliente.dni}</td>
+                            <td>${cliente.telefono}</td>
+                            <td>${cliente.direccion}</td>
+                            <td>
+                                <button onclick="editarCliente(${cliente.id})" class="btn-ver">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button onclick="eliminarCliente(${cliente.id})" class="btn-danger">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+    
+            async function editarCliente(id) {
+                const cliente = clientes.find(c => c.id == id);
+                if (!cliente) return;
+    
+                const { value: formValues } = await Swal.fire({
+                    title: 'Editar Cliente',
+                    html:
+                        `<input id="swal-nombre" class="swal2-input" value="${cliente.nombre}" placeholder="Nombre">` +
+                        `<input id="swal-dni" class="swal2-input" value="${cliente.dni}" placeholder="DNI">` +
+                        `<input id="swal-telefono" class="swal2-input" value="${cliente.telefono}" placeholder="Teléfono">` +
+                        `<input id="swal-direccion" class="swal2-input" value="${cliente.direccion}" placeholder="Dirección">`,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    preConfirm: () => {
+                        return {
+                            nombre: document.getElementById('swal-nombre').value,
+                            dni: document.getElementById('swal-dni').value,
+                            telefono: document.getElementById('swal-telefono').value,
+                            direccion: document.getElementById('swal-direccion').value
+                        }
+                    }
+                });
+    
+                if (formValues) {
+                    try {
+                        const response = await fetch('clientes.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=actualizar&id=${id}&nombre=${formValues.nombre}&dni=${formValues.dni}&telefono=${formValues.telefono}&direccion=${formValues.direccion}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            Swal.fire('¡Éxito!', 'Cliente actualizado correctamente', 'success');
+                            await cargarDatos();
+                        } else {
+                            Swal.fire('Error', data.message || 'Error al actualizar el cliente', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error actualizando cliente:', error);
+                        Swal.fire('Error', 'Error al actualizar el cliente', 'error');
+                    }
+                }
+            }
+    
+            async function eliminarCliente(id) {
+                const result = await Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede revertir",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                });
+    
+                if (result.isConfirmed) {
+                    try {
+                        const response = await fetch('clientes.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=eliminar&id=${id}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            Swal.fire('¡Eliminado!', 'Cliente eliminado correctamente', 'success');
+                            await cargarDatos();
+                        } else {
+                            Swal.fire('Error', data.message || 'Error al eliminar el cliente', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error eliminando cliente:', error);
+                        Swal.fire('Error', 'Error al eliminar el cliente', 'error');
+                    }
+                }
+            }
+    
+            async function logout() {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('changePasswordForm').style.display = 'none';
+            }
+    
+            function actualizarSelectClientes() {
+                const select = document.getElementById('clientePrestamo');
+                select.innerHTML = '<option value="">Seleccione un cliente</option>';
+                clientes.forEach(cliente => {
+                    select.innerHTML += `
+                        <option value="${cliente.id}">${cliente.nombre} - ${cliente.dni}</option>
+                    `;
+                });
+            }
+    
+            function actualizarSelectPrestamista() {
+                const select = document.getElementById('prestamistaPrestamo');
+                select.innerHTML = '<option value="">Seleccione un prestamista</option>';
+                prestamistas.forEach(prestamista => {
+                    if (prestamista.estado === 'activo') {
+                        select.innerHTML += `
+                            <option value="${prestamista.id}">
+                                ${prestamista.nombre} - ${prestamista.rnc}
+                            </option>
+                        `;
+                    }
+                });
+            }
+    
+            async function registrarPrestamo(event) {
+                event.preventDefault();
+                const formData = new FormData();
+                
+                formData.append('action', 'registrar');
+                formData.append('clienteId', document.getElementById('clientePrestamo').value);
+                formData.append('prestamistaId', document.getElementById('prestamistaPrestamo').value);
+                formData.append('monto', document.getElementById('montoPrestamo').value);
+                formData.append('interes', document.getElementById('interesPrestamo').value);
+                formData.append('frecuencia', document.getElementById('frecuenciaPago').value);
+                formData.append('plazo', document.getElementById('plazoPrestamo').value);
+                formData.append('cuota', calcularCuota(
+                    parseFloat(document.getElementById('montoPrestamo').value),
+                    parseFloat(document.getElementById('interesPrestamo').value),
+                    parseInt(document.getElementById('plazoPrestamo').value)
+                ));
+    
+                try {
+                    const response = await fetch('prestamos.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('Préstamo registrado correctamente');
+                        await cargarDatos(); 
+                        event.target.reset();
+                    } else {
+                        alert(data.message || 'Error al registrar el préstamo');
+                    }
+                } catch (error) {
+                    console.error('Error registrando préstamo:', error);
+                    alert('Error al registrar el préstamo: ' + error.message);
+                }
+            }
+    
+            function calcularCuota(monto, interes, plazo) {
+                const tasaInteres = interes / 100;
+                const cuota = (monto * (1 + tasaInteres)) / plazo;
+                return cuota.toFixed(2);
+            }
+    
+            async function pagarCuota(prestamoId, numeroCuota, montoCuota) {
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                if (!prestamo) return;
+    
+                const pago = {
+                    id: Date.now(),
+                    prestamoId,
+                    cliente: prestamo.cliente,
+                    monto: montoCuota,
+                    tipo: 'regular',
+                    fecha: new Date().toISOString().split('T')[0],
+                    numeroCuota
+                };
+    
+                try {
+                    const response = await fetch('pagos.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `action=registrar&monto=${pago.monto}&tipo=${pago.tipo}&fecha=${pago.fecha}&prestamoId=${pago.prestamoId}&numeroCuota=${pago.numeroCuota}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        await cargarDatos();
+                        const row = document.querySelector(`tr[data-cuota="${numeroCuota}"][data-prestamo-id="${prestamoId}"]`);
+                        if (row) {
+                            const statusCell = row.querySelector('.estado-cuota');
+                            const payButton = row.querySelector('.btn-pagar');
+                            statusCell.textContent = 'Pagado';
+                            payButton.disabled = true;
+                            payButton.style.backgroundColor = '#ccc';
+                        }
+    
+                        const totalCuotas = prestamo.plazo;
+                        const cuotasPagadas = pagos.filter(p => p.prestamoId == prestamoId && p.tipo === 'regular').length;
+        
+                        if (cuotasPagadas >= totalCuotas) {
+                            prestamo.estado = 'Pagado';
+                            actualizarTablaPrestamos();
+                        }
+    
+                        actualizarTablaPagos();
+                        actualizarPagosPendientes();
+                        actualizarReportes();
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error pagando cuota:', error);
+                }
+            }
+    
+            async function pagarPrestamoCompleto(prestamoId) {
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                if (!prestamo || prestamo.estado !== 'Activo') return;
+    
+                const pagosPrevios = pagos.filter(p => p.prestamoId == prestamoId);
+                const totalPagado = pagosPrevios.reduce((sum, p) => sum + p.monto, 0);
+                const montoTotal = prestamo.monto * (1 + prestamo.interes / 100);
+                const saldoPendiente = montoTotal - totalPagado;
+    
+                if (confirm(`¿Desea realizar el pago total del préstamo? Monto pendiente: $${saldoPendiente.toFixed(2)}`)) {
+                    try {
+                        const response = await fetch('pagos.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=registrar&prestamoId=${prestamoId}&monto=${saldoPendiente}&tipo=pago total&fecha=${new Date().toISOString().split('T')[0]}`
+                        });
+    
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('Pago total realizado correctamente');
+                            await cargarDatos();
+                        } else {
+                            alert(data.message || 'Error al realizar el pago total');
+                        }
+                    } catch (error) {
+                        console.error('Error al realizar pago total:', error);
+                        alert('Error al procesar el pago total');
+                    }
+                }
+            }
+    
+            function verAmortizacion(prestamoId) {
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                if (!prestamo) return;
+    
+                document.querySelector('#tablaAmortizacion tbody').innerHTML = '';
+    
+                generarTablaAmortizacion(prestamo);
+    
+                document.querySelector('#tablaAmortizacion').scrollIntoView({ behavior: 'smooth' });
+            }
+    
+            function generarTablaAmortizacion(prestamo) {
+                const tbody = document.querySelector('#tablaAmortizacion tbody');
+                tbody.innerHTML = '';
+    
+                let saldo = prestamo.monto;
+                const interesPeriodo = prestamo.interes / 100 / prestamo.plazo;
+    
+                for(let i = 1; i <= Math.min(prestamo.plazo, 5); i++) {
+                    const interes = saldo * interesPeriodo;
+                    const capital = prestamo.cuota - interes;
+                    saldo -= capital;
+    
+                    const fecha = calcularFechaVencimiento(prestamo.fechaInicio, i, prestamo.frecuencia);
+                    
+                    tbody.innerHTML += `
+                        <tr data-cuota="${i}" data-prestamo-id="${prestamo.id}">
+                            <td>${i}</td>
+                            <td>${fecha}</td>
+                            <td>${prestamo.cuota}</td>
+                            <td>${capital.toFixed(2)}</td>
+                            <td>${interes.toFixed(2)}</td>
+                            <td>${Math.max(0, saldo).toFixed(2)}</td>
+                            <td class="estado-cuota">Pendiente</td>
+                            <td>
+                                <button onclick="pagarCuota(${prestamo.id}, ${i}, ${prestamo.cuota})" class="btn-pagar">
+                                    Pagar Cuota
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            function calcularFechaVencimiento(fechaInicio, numeroCuota, frecuencia) {
+                const fecha = new Date(fechaInicio);
+                switch(frecuencia) {
+                    case 'diario':
+                        fecha.setDate(fecha.getDate() + numeroCuota);
+                        break;
+                    case 'semanal':
+                        fecha.setDate(fecha.getDate() + (numeroCuota * 7));
+                        break;
+                    case 'quincenal':
+                        fecha.setDate(fecha.getDate() + (numeroCuota * 15));
+                        break;
+                    case 'mensual':
+                        fecha.setMonth(fecha.getMonth() + numeroCuota);
+                        break;
+                    case 'anual':
+                        fecha.setFullYear(fecha.getFullYear() + numeroCuota);
+                        break;
+                }
+                return fecha.toISOString().split('T')[0];
+            }
+    
+            async function registrarPago(event) {
+                event.preventDefault();
+                const prestamoId = document.getElementById('prestamoPago').value;
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                const numeroCuota = document.getElementById('selectCuota').value;
+    
+                const pago = {
+                    id: Date.now(),
+                    prestamoId,
+                    cliente: prestamo.cliente,
+                    monto: parseFloat(document.getElementById('montoPago').value),
+                    tipo: document.getElementById('tipoPago').value,
+                    fecha: document.getElementById('fechaPago').value,
+                    numeroCuota
+                };
+    
+                try {
+                    const response = await fetch('pagos.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `action=registrar&monto=${pago.monto}&tipo=${pago.tipo}&fecha=${pago.fecha}&prestamoId=${pago.prestamoId}&numeroCuota=${pago.numeroCuota}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Show success message using SweetAlert2
+                        await Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'El pago se ha registrado correctamente',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+    
+                        await cargarDatos();
+                        const row = document.querySelector(`tr[data-cuota="${numeroCuota}"][data-prestamo-id="${prestamoId}"]`);
+                        if (row) {
+                            const statusCell = row.querySelector('.estado-cuota');
+                            const payButton = row.querySelector('.btn-pagar');
+                            statusCell.textContent = 'Pagado';
+                            payButton.disabled = true;
+                            payButton.style.backgroundColor = '#ccc';
+                        }
+    
+                        const totalCuotas = prestamo.plazo;
+                        const cuotasPagadas = pagos.filter(p => p.prestamoId == prestamoId && p.tipo === 'regular').length;
+    
+                        if (cuotasPagadas >= totalCuotas) {
+                            prestamo.estado = 'Pagado';
+                            actualizarTablaPrestamos();
+                        }
+    
+                        // Clear the form
+                        document.getElementById('pagoForm').reset();
+                        document.getElementById('prestamoPago').value = '';
+                        document.getElementById('selectCuota').innerHTML = '<option value="">Seleccione cuota a pagar</option>';
+                        document.getElementById('montoPago').value = '';
+    
+                        actualizarTablaPagos();
+                        actualizarPagosPendientes();
+                        actualizarReportes();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Error al registrar el pago'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error registrando pago:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al procesar el pago'
+                    });
+                }
+            }
+    
+            function actualizarTablaPagos() {
+                const tbody = document.querySelector('#tablaPagos tbody');
+                tbody.innerHTML = '';
+                
+                if (pagos && pagos.length > 0) {
+                    pagos.forEach(pago => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${pago.cliente}</td>
+                                <td>Préstamo #${pago.prestamoId}</td>
+                                <td>$${parseFloat(pago.monto).toFixed(2)}</td>
+                                <td>${pago.tipo}</td>
+                                <td>${new Date(pago.fecha).toLocaleDateString()}</td>
+                                <td>${pago.numeroCuota || 'N/A'}</td>
+                                <td>
+                                    <button onclick="generarTicketPDF(${pago.id})" class="btn-ver">
+                                        <i class="fas fa-file-pdf"></i> Ticket
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No hay pagos registrados</td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            async function eliminarUsuario(id) {
+                if (confirm('¿Está seguro de eliminar este usuario?')) {
+                    try {
+                        const response = await fetch('usuarios.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=eliminar&id=${id}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            await cargarDatos();
+                            actualizarTablaUsuarios();
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error eliminando usuario:', error);
+                    }
+                }
+            }
+    
+            async function registrarUsuario(event) {
+                event.preventDefault();
+                const username = document.getElementById('newUsername').value;
+                const password = document.getElementById('newUserPassword').value;
+                const confirmPassword = document.getElementById('confirmUserPassword').value;
+                const tipo = document.getElementById('tipoUsuario').value;
+    
+                const permisos = {
+                    clientes: document.getElementById('permiso-clientes').checked,
+                    prestamos: document.getElementById('permiso-prestamos').checked,
+                    pagos: document.getElementById('permiso-pagos').checked,
+                    usuarios: document.getElementById('permiso-usuarios').checked,
+                    reportes: document.getElementById('permiso-reportes').checked,
+                    prestamista: document.getElementById('permiso-prestamista').checked
+                };
+    
+                try {
+                    const response = await fetch('usuarios.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `action=registrar&username=${username}&password=${password}&tipo=${tipo}&permisos=${JSON.stringify(permisos)}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('Usuario registrado exitosamente');
+                        await cargarDatos();
+                        actualizarTablaUsuarios();
+                        event.target.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error registrando usuario:', error);
+                }
+            }
+    
+            function actualizarTablaUsuarios() {
+                const tbody = document.querySelector('#tablaUsuarios tbody');
+                tbody.innerHTML = '';
+                
+                if (usuarios && usuarios.length > 0) {
+                    usuarios.forEach(usuario => {
+                        if (usuario.username !== 'admin') {
+                            const permisos = typeof usuario.permisos === 'string' ? 
+                                JSON.parse(usuario.permisos) : usuario.permisos;
+                            
+                            const permisosTexto = Object.entries(permisos || {})
+                                .filter(([, value]) => value)
+                                .map(([key]) => key)
+                                .join(', ');
+                            
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td>${usuario.username}</td>
+                                    <td>${usuario.tipo === 'admin' ? 'Administrador' : 'Consulta'}</td>
+                                    <td>${permisosTexto}</td>
+                                    <td>
+                                        <button onclick="eliminarUsuario(${usuario.id})" class="btn-danger">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    });
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No hay usuarios registrados</td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            function applyUserPermissions(permisos) {
+                if (!permisos) return;
+    
+                const configuracionVisible = permisos.usuarios || permisos.prestamista;
+    
+                if (!permisos.clientes) {
+                    document.querySelector('.nav-tab[onclick="showTab(\'clientes\')"]').style.display = 'none';
+                    document.getElementById('clientes').style.display = 'none';
+                }
+                if (!permisos.prestamos) {
+                    document.querySelector('.nav-tab[onclick="showTab(\'prestamos\')"]').style.display = 'none';
+                    document.getElementById('prestamos').style.display = 'none';
+                }
+                if (!permisos.pagos) {
+                    document.querySelector('.nav-tab[onclick="showTab(\'pagos\')"]').style.display = 'none';
+                    document.getElementById('pagos').style.display = 'none';
+                }
+                if (!permisos.usuarios) {
+                    document.querySelector('.config-item[onclick="showTab(\'usuarios\')"]').style.display = 'none';
+                    document.getElementById('usuarios').style.display = 'none';
+                }
+                if (!permisos.prestamista) {
+                    document.querySelector('.config-item[onclick="showTab(\'prestamista\')"]').style.display = 'none';
+                    document.getElementById('prestamista').style.display = 'none';
+                }
+    
+                if (!configuracionVisible) {
+                    document.querySelector('.nav-tab[onclick="showTab(\'configuracion\')"]').style.display = 'none';
+                    document.getElementById('configuracion').style.display = 'none';
+                }
+            }
+    
+            function actualizarReportes() {
+                console.log('Actualizando reportes...', prestamos, clientes, pagos); 
+                
+                const totalPrestado = prestamos.reduce((sum, p) => sum + parseFloat(p.monto || 0), 0);
+                document.getElementById('totalPrestado').textContent = `$${totalPrestado.toFixed(2)}`;
+                
+                const totalClientes = clientes.length;
+                document.getElementById('totalClientes').textContent = totalClientes;
+                
+                const prestamosActivos = prestamos.filter(p => p.estado === 'Activo').length;
+                document.getElementById('prestamosActivos').textContent = prestamosActivos;
+                
+                const hoy = new Date().toISOString().split('T')[0];
+                const pagosHoy = pagos
+                    .filter(p => p.fecha === hoy)
+                    .reduce((sum, p) => sum + parseFloat(p.monto || 0), 0);
+                document.getElementById('pagosHoy').textContent = `$${pagosHoy.toFixed(2)}`;
+                
+                const prestamosDia = prestamos.filter(p => {
+                    const fechaPrestamo = new Date(p.fechaInicio).toISOString().split('T')[0];
+                    return fechaPrestamo === hoy;
+                });
+                actualizarTablaPrestamosDia(prestamosDia);
+                actualizarPrestamosPagosVencidos();
+            }
+    
+            function actualizarTablaPrestamosDia(prestamosDia) {
+                console.log('Actualizando tabla préstamos del día:', prestamosDia); 
+                const tbody = document.querySelector('#prestamosDiaTable tbody');
+                tbody.innerHTML = '';
+                
+                prestamosDia.forEach(prestamo => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${prestamo.cliente || 'N/A'}</td>
+                            <td>$${parseFloat(prestamo.monto).toFixed(2)}</td>
+                            <td>${prestamo.interes}%</td>
+                            <td>${prestamo.estado}</td>
+                        </tr>
+                    `;
+                });
+    
+                if (prestamosDia.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No hay préstamos registrados hoy</td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            function actualizarPrestamosPagosVencidos() {
+                console.log('Actualizando préstamos y pagos vencidos...'); 
+                const hoy = new Date();
+                const tbody1 = document.querySelector('#prestamosVencidosTable tbody');
+                const tbody2 = document.querySelector('#pagosAtrasadosTable tbody');
+                
+                tbody1.innerHTML = '';
+                tbody2.innerHTML = '';
+                
+                let hayPrestamosVencidos = false;
+                let hayPagosAtrasados = false;
+                
+                prestamos.forEach(prestamo => {
+                    if (prestamo.estado === 'Activo') {
+                        const fechaVencimiento = new Date(prestamo.fechaInicio);
+                        fechaVencimiento.setDate(fechaVencimiento.getDate() + 
+                            (parseInt(prestamo.plazo) * getDiasPorFrecuencia(prestamo.frecuencia)));
+                        
+                        if (fechaVencimiento < hoy) {
+                            hayPrestamosVencidos = true;
+                            const diasVencido = Math.floor((hoy - fechaVencimiento) / (1000 * 60 * 60 * 24));
+                            tbody1.innerHTML += `
+                                <tr>
+                                    <td>${prestamo.cliente || 'N/A'}</td>
+                                    <td>$${parseFloat(prestamo.monto).toFixed(2)}</td>
+                                    <td>${diasVencido}</td>
+                                    <td>${prestamo.estado}</td>
+                                </tr>
+                            `;
+                        }
+                        
+                        const cuotasVencidas = getCuotasVencidas(prestamo);
+                        if (cuotasVencidas.length > 0) {
+                            hayPagosAtrasados = true;
+                            cuotasVencidas.forEach(cuota => {
+                                tbody2.innerHTML += `
+                                    <tr>
+                                        <td>${prestamo.cliente || 'N/A'}</td>
+                                        <td>Préstamo #${prestamo.id}</td>
+                                        <td>${cuota.numero}</td>
+                                        <td>${cuota.diasAtraso}</td>
+                                    </tr>
+                                `;
+                            });
+                        }
+                    }
+                });
+    
+                if (!hayPrestamosVencidos) {
+                    tbody1.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No hay préstamos vencidos</td>
+                        </tr>
+                    `;
+                }
+    
+                if (!hayPagosAtrasados) {
+                    tbody2.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No hay pagos atrasados</td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            function getDiasPorFrecuencia(frecuencia) {
+                switch(frecuencia) {
+                    case 'diario': return 1;
+                    case 'semanal': return 7;
+                    case 'quincenal': return 15;
+                    case 'mensual': return 30;
+                    case 'anual': return 365;
+                    default: return 1;
+                }
+            }
+    
+            function getCuotasVencidas(prestamo) {
+                const hoy = new Date();
+                const cuotasVencidas = [];
+                
+                for(let i = 1; i <= Math.min(prestamo.plazo, 5); i++) {
+                    const fechaVencimiento = new Date(calcularFechaVencimiento(prestamo.fechaInicio, i, prestamo.frecuencia));
+                    const pagado = pagos.some(p => p.prestamoId === prestamo.id && p.numeroCuota == i);
+                    
+                    if (!pagado && fechaVencimiento < hoy) {
+                        cuotasVencidas.push({
+                            numero: i,
+                            diasAtraso: Math.floor((hoy - fechaVencimiento) / (1000 * 60 * 60 * 24))
+                        });
+                    }
+                }
+                
+                return cuotasVencidas;
+            }
+    
+            function generarContratoPDF(prestamoId) {
+                const prestamo = prestamos.find(p => p.id === prestamoId);
+                const cliente = clientes.find(c => c.id == prestamo.clienteId);
+                const prestamista = prestamistas.find(p => p.id == prestamo.prestamistaId);
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(20);
+                doc.text('CONTRATO DE PRÉSTAMO', 105, 20, { align: 'center' });
+                
+                doc.setFontSize(12);
+                doc.text('Fecha: ' + new Date(prestamo.fechaInicio).toLocaleDateString(), 20, 40);
+                doc.text('N° de Contrato: ' + prestamo.id, 20, 50);
+                
+                doc.text('PARTES DEL CONTRATO:', 20, 70);
+                doc.setFontSize(10);
+                doc.text('PRESTAMISTA:', 30, 80);
+                doc.text('Nombre: ' + prestamista.nombre, 40, 90);
+                doc.text('RNC: ' + prestamista.rnc, 40, 100);
+                doc.text('Dirección: ' + prestamista.direccion, 40, 110);
+                
+                doc.text('PRESTATARIO:', 30, 130);
+                doc.text('Nombre: ' + cliente.nombre, 40, 140);
+                doc.text('Cédula/Identificación: ' + cliente.dni, 40, 150);
+                doc.text('Dirección: ' + cliente.direccion, 40, 160);
+                doc.text('Teléfono: ' + cliente.telefono, 40, 170);
+                
+                doc.setFontSize(12);
+                doc.text('TÉRMINOS DEL PRÉSTAMO:', 20, 150);
+                doc.setFontSize(10);
+                doc.text('Monto del Préstamo: $' + prestamo.monto.toFixed(2), 30, 160);
+                doc.text('Tasa de Interés: ' + prestamo.interes + '%', 30, 170);
+                doc.text('Plazo: ' + prestamo.plazo + ' pagos ' + prestamo.frecuencia, 30, 180);
+                doc.text('Monto de Cuota: $' + prestamo.cuota, 30, 190);
+                doc.text('Fecha de Inicio: ' + new Date(prestamo.fechaInicio).toLocaleDateString(), 30, 200);
+                
+                doc.setFontSize(12);
+                doc.text('CALENDARIO DE PAGOS:', 20, 220);
+                doc.setFontSize(10);
+                
+                let yPos = 230;
+                let saldo = prestamo.monto;
+                const interesPeriodo = prestamo.interes / 100 / prestamo.plazo;
+    
+                for(let i = 1; i <= Math.min(prestamo.plazo, 5); i++) {
+                    const interes = saldo * interesPeriodo;
+                    const capital = prestamo.cuota - interes;
+                    saldo -= capital;
+    
+                    const fecha = calcularFechaVencimiento(prestamo.fechaInicio, i, prestamo.frecuencia);
+                    
+                    doc.text(`Cuota ${i}: ${fecha} - $${prestamo.cuota}`, 30, yPos);
+                    yPos += 10;
+                }
+                
+                if(prestamo.plazo > 5) {
+                    doc.text('...', 30, yPos);
+                }
+                
+                doc.text('_____________________', 40, 260);
+                doc.text('Firma del Prestamista', 40, 270);
+                
+                doc.text('_____________________', 140, 260);
+                doc.text('Firma del Prestatario', 140, 270);
+                
+                doc.setFontSize(8);
+                doc.text('Este documento constituye un contrato legal vinculante entre las partes.', 105, 280, { align: 'center' });
+                
+                const fileName = `contrato_prestamo_${prestamo.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(fileName);
+            }
+    
+            async function eliminarPrestamista(id) {
+                if (confirm('¿Está seguro de eliminar este prestamista?')) {
+                    try {
+                        const response = await fetch('prestamistas.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `action=eliminar&id=${id}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            await cargarDatos();
+                            actualizarTablaPrestamistas();
+                        } else {
+                            alert(data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error eliminando prestamista:', error);
+                    }
+                }
+            }
+    
+            async function actualizarPrestamista(event) {
+                event.preventDefault();
+                
+                const nuevoPrestamista = {
+                    id: Date.now(),
+                    nombre: document.getElementById('nombrePrestamista').value,
+                    rnc: document.getElementById('rncPrestamista').value,
+                    direccion: document.getElementById('direccionPrestamista').value,
+                    telefono: document.getElementById('telefonoPrestamista').value,
+                    email: document.getElementById('emailPrestamista').value,
+                    web: document.getElementById('webPrestamista').value,
+                    estado: document.getElementById('estadoPrestamista').value
+                };
+                
+                try {
+                    const response = await fetch('prestamistas.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `action=registrar&nombre=${nuevoPrestamista.nombre}&rnc=${nuevoPrestamista.rnc}&direccion=${nuevoPrestamista.direccion}&telefono=${nuevoPrestamista.telefono}&email=${nuevoPrestamista.email}&web=${nuevoPrestamista.web}&estado=${nuevoPrestamista.estado}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        await cargarDatos();
+                        actualizarSelectPrestamista(); 
+                        actualizarTablaPrestamistas(); 
+                        alert('Información del prestamista actualizada correctamente');
+                        event.target.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error actualizando prestamista:', error);
+                }
+            }
+    
+            function generarTicketPDF(pagoId) {
+                const pago = pagos.find(p => p.id === pagoId);
+                const prestamo = prestamos.find(p => p.id == pago.prestamoId);
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(20);
+                doc.text('Comprobante de Pago', 105, 20, { align: 'center' });
+                
+                doc.setFontSize(12);
+                doc.text('Fecha: ' + new Date(pago.fecha).toLocaleDateString(), 20, 40);
+                doc.text('N° de Ticket: ' + pago.id, 20, 50);
+                
+                doc.text('Información del Cliente:', 20, 70);
+                doc.setFontSize(10);
+                doc.text('Cliente: ' + pago.cliente, 30, 80);
+                doc.text('N° de Préstamo: ' + pago.prestamoId, 30, 90);
+                
+                doc.setFontSize(12);
+                doc.text('Detalles del Pago:', 20, 110);
+                doc.setFontSize(10);
+                doc.text('Tipo de Pago: ' + pago.tipo, 30, 120);
+                doc.text('N° de Cuota: ' + pago.numeroCuota, 30, 130);
+                doc.text('Monto Pagado: $' + pago.monto.toFixed(2), 30, 140);
+                
+                if (prestamo) {
+                    const totalPagado = pagos
+                        .filter(p => p.prestamoId === prestamo.id)
+                        .reduce((sum, p) => sum + p.monto, 0);
+                    const montoTotal = prestamo.monto * (1 + prestamo.interes / 100);
+                    const saldoPendiente = montoTotal - totalPagado;
+                    
+                    doc.text('Monto Total del Préstamo: $' + montoTotal.toFixed(2), 30, 150);
+                    doc.text('Saldo Pendiente: $' + saldoPendiente.toFixed(2), 30, 160);
+                }
+                
+                doc.setFontSize(8);
+                doc.text('Este documento es un comprobante de pago válido.', 105, 280, { align: 'center' });
+                
+                const fileName = `ticket_pago_${pago.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(fileName);
+            }
+    
+            function actualizarTablaPrestamistas() {
+                const tbody = document.querySelector('#tablaPrestamistas tbody');
+                tbody.innerHTML = '';
+                prestamistas.forEach(prestamista => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${prestamista.nombre}</td>
+                            <td>${prestamista.rnc}</td>
+                            <td>${prestamista.direccion}</td>
+                            <td>${prestamista.telefono}</td>
+                            <td>${prestamista.email}</td>
+                            <td>${prestamista.web || '-'}</td>
+                            <td>${prestamista.estado}</td>
+                            <td>
+                                <button onclick="eliminarPrestamista(${prestamista.id})" class="btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+    
+            function actualizarSelectPrestamos() {
+                const select = document.getElementById('prestamoPago');
+                if (!select) return; 
+                
+                select.innerHTML = '<option value="">Seleccione un préstamo</option>';
+                
+                const prestamosActivos = prestamos.filter(p => p.estado === 'Activo');
+                
+                prestamosActivos.forEach(prestamo => {
+                    select.innerHTML += `
+                        <option value="${prestamo.id}">
+                            ${prestamo.cliente} - Préstamo #${prestamo.id} - $${prestamo.monto}
+                        </option>
+                    `;
+                });
+                
+                console.log('Préstamos cargados en selector:', prestamosActivos.length);
+            }
+    
+            function exportarClientesPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.text('Listado de Clientes', 105, 15, { align: 'center' });
+                
+                const headers = [['Nombre', 'Cédula', 'Teléfono', 'Dirección']];
+                const data = clientes.map(cliente => [
+                    cliente.nombre,
+                    cliente.dni,
+                    cliente.telefono,
+                    cliente.direccion
+                ]);
+                
+                doc.autoTable({
+                    head: headers,
+                    body: data,
+                    startY: 25,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                doc.save('listado_clientes.pdf');
+            }
+    
+            function exportarPrestamosPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.text('Listado de Préstamos', 105, 15, { align: 'center' });
+                
+                const headers = [['Cliente', 'Monto', 'Interés', 'Frecuencia', 'Cuota', 'Estado']];
+                const data = prestamos.map(prestamo => [
+                    prestamo.cliente,
+                    `$${prestamo.monto.toFixed(2)}`,
+                    `${prestamo.interes}%`,
+                    prestamo.frecuencia,
+                    `$${prestamo.cuota.toFixed(2)}`,
+                    prestamo.estado
+                ]);
+                
+                doc.autoTable({
+                    head: headers,
+                    body: data,
+                    startY: 25,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                doc.save('listado_prestamos.pdf');
+            }
+    
+            function exportarPagosPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.text('Historial de Pagos', 105, 15, { align: 'center' });
+                
+                const headers = [['Cliente', 'Préstamo', 'Monto', 'Tipo', 'Fecha', 'Cuota']];
+                const data = pagos.map(pago => [
+                    pago.cliente,
+                    `Préstamo #${pago.prestamoId}`,
+                    `$${parseFloat(pago.monto).toFixed(2)}`,
+                    pago.tipo,
+                    new Date(pago.fecha).toLocaleDateString(),
+                    pago.numeroCuota || 'N/A'
+                ]);
+                
+                doc.autoTable({
+                    head: headers,
+                    body: data,
+                    startY: 25,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                doc.save('historial_pagos.pdf');
+            }
+    
+            function exportarDashboardPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.text('Reporte del Dashboard', 105, 15, { align: 'center' });
+                
+                // Estadísticas generales
+                doc.setFontSize(12);
+                doc.text('Estadísticas Generales', 20, 30);
+                doc.setFontSize(10);
+                doc.text(`Total Prestado: $${document.getElementById('totalPrestado').textContent}`, 30, 40);
+                doc.text(`Total Clientes: ${document.getElementById('totalClientes').textContent}`, 30, 50);
+                doc.text(`Préstamos Activos: ${document.getElementById('prestamosActivos').textContent}`, 30, 60);
+                doc.text(`Pagos del Día: ${document.getElementById('pagosHoy').textContent}`, 30, 70);
+                
+                // Préstamos del día
+                doc.setFontSize(12);
+                doc.text('Préstamos del Día', 20, 90);
+                const prestamosDiaData = Array.from(document.querySelectorAll('#prestamosDiaTable tbody tr')).map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return Array.from(cells).map(cell => cell.textContent);
+                });
+                
+                doc.autoTable({
+                    head: [['Cliente', 'Monto', 'Interés', 'Estado']],
+                    body: prestamosDiaData,
+                    startY: 100,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                // Préstamos vencidos
+                doc.addPage();
+                doc.setFontSize(12);
+                doc.text('Préstamos Vencidos', 20, 20);
+                const prestamosVencidosData = Array.from(document.querySelectorAll('#prestamosVencidosTable tbody tr')).map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return Array.from(cells).map(cell => cell.textContent);
+                });
+                
+                doc.autoTable({
+                    head: [['Cliente', 'Monto', 'Días Vencido', 'Estado']],
+                    body: prestamosVencidosData,
+                    startY: 30,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                // Pagos atrasados
+                doc.setFontSize(12);
+                doc.text('Pagos Atrasados', 20, doc.autoTable.previous.finalY + 20);
+                const pagosAtrasadosData = Array.from(document.querySelectorAll('#pagosAtrasadosTable tbody tr')).map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return Array.from(cells).map(cell => cell.textContent);
+                });
+                
+                doc.autoTable({
+                    head: [['Cliente', 'Préstamo', 'Cuota', 'Días Atraso']],
+                    body: pagosAtrasadosData,
+                    startY: doc.autoTable.previous.finalY + 30,
+                    margin: { top: 15 },
+                    theme: 'grid'
+                });
+                
+                doc.save('dashboard_report.pdf');
+            }
+            
+            function actualizarTablaPrestamos() {
+                const tbody = document.querySelector('#tablaPrestamos tbody');
+                tbody.innerHTML = '';
+                
+                if (prestamos && prestamos.length > 0) {
+                    prestamos.forEach(prestamo => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${prestamo.cliente}</td>
+                                <td>${prestamo.prestamistaNombre}</td>
+                                <td>$${parseFloat(prestamo.monto).toFixed(2)}</td>
+                                <td>${prestamo.interes}%</td>
+                                <td>${prestamo.frecuencia}</td>
+                                <td>$${parseFloat(prestamo.cuota).toFixed(2)}</td>
+                                <td>${prestamo.estado}</td>
+                                <td>
+                                    <button onclick="verAmortizacion(${prestamo.id})" class="btn-ver">
+                                        <i class="fas fa-table"></i> Ver Plan
+                                    </button>
+                                    <button onclick="pagarPrestamoCompleto(${prestamo.id})" class="btn-ver" 
+                                            ${prestamo.estado !== 'Activo' ? 'disabled' : ''}>
+                                        <i class="fas fa-money-bill-wave"></i> Pago Total
+                                    </button>
+                                    <button onclick="generarContratoPDF(${prestamo.id})" class="btn-ver">
+                                        <i class="fas fa-file-pdf"></i> Contrato
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No hay préstamos registrados</td>
+                        </tr>
+                    `;
+                }
+            }
+    
+            function showChangePassword() {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('changePasswordForm').style.display = 'block';
+            }
+    
+            async function changePassword(event) {
+                event.preventDefault();
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+    
+                if (newPassword !== confirmPassword) {
+                    alert('Las contraseñas nuevas no coinciden');
+                    return;
+                }
+    
+                try {
+                    const response = await fetch('usuarios.php', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `action=cambiar_password&id=${currentUser.id}&currentPassword=${currentPassword}&newPassword=${newPassword}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('Contraseña actualizada correctamente');
+                        showMainContent();
+                    } else {
+                        alert(data.message || 'Error al cambiar la contraseña');
+                    }
+                } catch (error) {
+                    console.error('Error cambiando contraseña:', error);
+                    alert('Error al cambiar la contraseña');
+                }
+            }
+    
+            async function actualizarPagosPendientes() {
+                const prestamoId = document.getElementById('prestamoPago').value;
+                const fechaPago = document.getElementById('fechaPago').value;
+                const selectCuota = document.getElementById('selectCuota');
+                
+                if (!prestamoId || !fechaPago) {
+                    return;
+                }
+    
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                if (!prestamo) {
+                    return;
+                }
+    
+                // Clear current options
+                selectCuota.innerHTML = '<option value="">Seleccione cuota a pagar</option>';
+    
+                // Get all payments for this loan
+                const pagosPrestamo = pagos.filter(p => p.prestamoId == prestamoId);
+                const fechaPagoDate = new Date(fechaPago);
+    
+                // Calculate available quotas
+                for (let i = 1; i <= prestamo.plazo; i++) {
+                    const fechaVencimiento = new Date(calcularFechaVencimiento(prestamo.fechaInicio, i, prestamo.frecuencia));
+                    const pagado = pagosPrestamo.some(p => p.numeroCuota == i);
+                    
+                    if (!pagado && fechaVencimiento <= fechaPagoDate) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = `Cuota ${i} - Vence: ${fechaVencimiento.toLocaleDateString()}`;
+                        selectCuota.appendChild(option);
+                    }
+                }
+    
+                // Update monto if a quota is selected
+                if (selectCuota.value) {
+                    actualizarMontoPago();
+                }
+            }
+    
+            function actualizarMontoPago() {
+                const prestamoId = document.getElementById('prestamoPago').value;
+                const prestamo = prestamos.find(p => p.id == prestamoId);
+                
+                if (prestamo) {
+                    document.getElementById('montoPago').value = prestamo.cuota;
+                    document.getElementById('montoPago').placeholder = `Cuota sugerida: ${prestamo.cuota}`;
+                }
+            }
+        </script>
+    </body>
+    </html>
